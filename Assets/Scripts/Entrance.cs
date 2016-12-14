@@ -1,16 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Entrance : MonoBehaviour {
+public class Entrance : MonoBehaviour
+{
+	public GameObject toSpawn;
 
-	// Use this for initialization
-	void Start () {
-		
+	public float frequency = 1.0f;
+	public float quantity = 50;
+
+	private float timer;
+
+	void Start()
+	{
+		timer = frequency;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	void Update()
+	{
+		if (quantity > 0)
+		{
+			timer -= Time.deltaTime;
+			if (timer < 0)
+			{
+				timer = frequency;
+				quantity--;
+				Instantiate(toSpawn, transform.position, transform.rotation);
+			}
+		}
 	}
+
 }
