@@ -1,19 +1,72 @@
 ﻿using UnityEngine;
 
-public class Entity : MonoBehaviour {
+// todo: Walk (anim)
+// todo: Fall (anim)
+// todo: Stoppers
+// todo: builder
+// todo: parachute
+// todo: Climb
+// todo: exploder
+// todo: drown (anim)
+// todo: splash (anim)
+// todo: escape (anim)
+// todo: dig down
+// todo: dig sideways
+// todo: dig diagonal
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+public class Entity : MonoBehaviour
+{
+    float fallingTime;
+    const float fallTolerence = 1.5f;
+
+    CharacterController character;
+
+    void Start()
+    {
+        character = GetComponent<CharacterController>();
+    }
+
+    void Update ()
 	{
-		GetComponent<CharacterController>().SimpleMove(transform.forward);
-	}
+        if(character.isGrounded)
+        {
+            UpdateNotFalling();
+            UpdateWalk();
+        }
+        else
+        {
+            UpdateFalling();
+            UpdateStationary();
+        }
+    }
 
-	void OnTriggerEnter(Collider other)
+    public bool IsGrounded() { return character.isGrounded; }
+
+    void UpdateFalling()
+    {
+        fallingTime += Time.deltaTime;
+    }
+
+    void UpdateNotFalling()
+    {
+        if (fallingTime > fallTolerence)
+        {
+            Die();
+        }
+        fallingTime = 0;
+    }
+
+    void UpdateWalk()
+    {
+        character.SimpleMove(transform.forward);
+    }
+
+    void UpdateStationary()
+    {
+        character.SimpleMove(Vector3.zero);
+    }
+
+    void OnTriggerEnter(Collider other)
 	{
 		Director director = other.GetComponent<Director>();
 		if (director)
@@ -21,4 +74,15 @@ public class Entity : MonoBehaviour {
 			transform.Rotate(Vector3.up, director.Turn);
 		}
 	}
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    public bool MarkForEscape()
+    {
+        Destroy(gameObject);
+        return true;
+    }
 }
