@@ -16,29 +16,80 @@
 
 public class Entity : MonoBehaviour
 {
+	[System.Flags]
+	enum Behaviour
+	{
+		Default		= 0,
+		Stop		= 1 << 1,
+		Build		= 1 << 2,
+		Parachute	= 1 << 3,
+		Climb		= 1 << 4,
+		Explode		= 1 << 5,
+		DigDown		= 1 << 6,
+		DigSideways = 1 << 7,
+		DigDiagonal = 1 << 8,
+	}
+
     float fallingTime;
     const float fallTolerence = 1.5f;
 
     CharacterController character;
+	Behaviour behaviour = Behaviour.Default;
 
-    void Start()
+
+	float parachuteTime = 3;
+	float currentParachuteTime;
+	float parachuteMassModifier = 0.5f;
+	float originalMass;
+
+	void Start()
     {
         character = GetComponent<CharacterController>();
-    }
+		originalMass = GetComponent<Rigidbody>().mass;
+	}
 
     void Update ()
 	{
-        if(character.isGrounded)
-        {
-            UpdateNotFalling();
-            UpdateWalk();
-        }
-        else
-        {
-            UpdateFalling();
-            UpdateStationary();
-        }
-    }
+		if (character.isGrounded)
+		{
+			if (fallingTime > fallTolerence)
+			{
+				Die();
+			}
+			else if (fallingTime > 0)
+			{
+				ProcessJustBackOnGround();
+			}
+
+			if (CheckBehaviour(Behaviour.Stop))
+			{
+				UpdateStationary();
+			}
+			else
+			{
+				UpdateWalk();
+			}
+		}
+		else // we are falling
+		{
+			if (CheckBehaviour(Behaviour.Parachute) && currentParachuteTime > 0)
+			{
+				currentParachuteTime -= Time.deltaTime;
+				GetComponent<Rigidbody>().mass = originalMass * parachuteMassModifier;
+			}
+			else
+			{
+				UpdateFalling();
+				UpdateStationary();
+			}
+		}
+	}
+
+	void ProcessJustBackOnGround()
+	{
+		fallingTime = 0;
+		currentParachuteTime = parachuteTime;
+	}
 
     public bool IsGrounded() { return character.isGrounded; }
 
@@ -47,21 +98,42 @@ public class Entity : MonoBehaviour
         fallingTime += Time.deltaTime;
     }
 
-    void UpdateNotFalling()
-    {
-        if (fallingTime > fallTolerence)
-        {
-            Die();
-        }
-        fallingTime = 0;
-    }
-
     void UpdateWalk()
     {
-        character.SimpleMove(transform.forward);
+		character.SimpleMove(transform.forward);
     }
 
-    void UpdateStationary()
+	bool CheckBehaviour(Behaviour check)
+	{
+		return (behaviour & check) == check;
+	}
+
+	bool AddBehaviour(Behaviour add)
+	{
+		if (CheckBehaviour(add))
+		{
+			// already set
+			return false;
+		}
+
+		switch(add)
+		{
+			case Behaviour.Parachute:
+				currentParachuteTime = parachuteTime;
+				break;
+		}
+
+		behaviour |= add;
+		return true;
+	}
+
+	void RemoveBehaviour(Behaviour remove)
+	{
+		Debug.Assert(CheckBehaviour(remove), "Behaviour must be there to be removed");
+		behaviour &= ~remove;
+	}
+
+	void UpdateStationary()
     {
         character.SimpleMove(Vector3.zero);
     }
