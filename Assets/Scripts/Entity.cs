@@ -16,9 +16,9 @@
 
 public class Entity : MonoBehaviour
 {
-	[System.Flags]
-	enum Behaviour
-	{
+    [System.Flags]
+    public enum Behaviour
+    {
 		Default		= 0,
 		Stop		= 1 << 1,
 		Build		= 1 << 2,
@@ -34,19 +34,20 @@ public class Entity : MonoBehaviour
     const float fallTolerence = 1.5f;
 
     CharacterController character;
-	Behaviour behaviour = Behaviour.Default;
+    [EnumFlag]
+	public Behaviour behaviour = Behaviour.Default;
 
 
-	float parachuteTime = 3;
-	float currentParachuteTime;
-	float parachuteMassModifier = 0.5f;
+	float parachuteTime = 6;
+    float currentParachuteTime;
+	float parachuteMassModifier = 0.3f;
 	float originalMass;
 
 	void Start()
     {
         character = GetComponent<CharacterController>();
-		originalMass = GetComponent<Rigidbody>().mass;
-	}
+        currentParachuteTime = parachuteTime;
+    }
 
     void Update ()
 	{
@@ -72,16 +73,18 @@ public class Entity : MonoBehaviour
 		}
 		else // we are falling
 		{
-			if (CheckBehaviour(Behaviour.Parachute) && currentParachuteTime > 0)
+            float gravity = 9.8f;
+
+            if (CheckBehaviour(Behaviour.Parachute) && currentParachuteTime > 0)
 			{
 				currentParachuteTime -= Time.deltaTime;
-				GetComponent<Rigidbody>().mass = originalMass * parachuteMassModifier;
-			}
-			else
+                character.Move(Vector3.down * gravity * parachuteMassModifier * Time.deltaTime);
+            }
+            else
 			{
-				UpdateFalling();
-				UpdateStationary();
-			}
+                fallingTime += Time.deltaTime;
+                character.SimpleMove(Vector3.down * gravity * Time.deltaTime);
+            }
 		}
 	}
 
@@ -92,11 +95,6 @@ public class Entity : MonoBehaviour
 	}
 
     public bool IsGrounded() { return character.isGrounded; }
-
-    void UpdateFalling()
-    {
-        fallingTime += Time.deltaTime;
-    }
 
     void UpdateWalk()
     {
