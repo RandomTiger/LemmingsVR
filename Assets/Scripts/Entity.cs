@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 
+// todo: Setup with voxels
+
 // todo: Walk (anim)
 // todo: Fall (anim)
 // todo: Stoppers
 // todo: builder
-// todo: parachute
-// todo: Climb
-// todo: exploder
+// todo: parachute (anim)
+// todo: exploder (anim)
 // todo: drown (anim)
 // todo: splash (anim)
 // todo: escape (anim)
+
+// 2ndry
+// todo: Climb
 // todo: dig down
 // todo: dig sideways
 // todo: dig diagonal
@@ -43,6 +47,8 @@ public class Entity : MonoBehaviour
 	float parachuteMassModifier = 0.3f;
 	float originalMass;
 
+    float explodeTimer = 5;
+
 	void Start()
     {
         character = GetComponent<CharacterController>();
@@ -51,7 +57,17 @@ public class Entity : MonoBehaviour
 
     void Update ()
 	{
-		if (character.isGrounded)
+        if(CheckBehaviour(Behaviour.Explode))
+        {
+            explodeTimer -= Time.deltaTime;
+            if(explodeTimer < 0)
+            {
+                Explode();
+                return;
+            }
+        }
+
+        if (character.isGrounded)
 		{
 			if (fallingTime > fallTolerence)
 			{
@@ -144,6 +160,12 @@ public class Entity : MonoBehaviour
 			transform.Rotate(Vector3.up, director.Turn);
 		}
 	}
+
+    public void Explode()
+    {
+        // todo, explode!
+        Die();
+    }
 
     public void Die()
     {
