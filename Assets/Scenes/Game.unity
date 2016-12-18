@@ -257,6 +257,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034e7bdbebdea684d87f2c1c33dfddfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &305292900
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628446533783318, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114975438895040762, guid: 5f4893f0cb61a59419f431f7d4289be5,
+        type: 2}
+      propertyPath: HasDeserialized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114845772213629478, guid: 5f4893f0cb61a59419f431f7d4289be5,
+        type: 2}
+      propertyPath: HasDeserialized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114318893843202410, guid: 5f4893f0cb61a59419f431f7d4289be5,
+        type: 2}
+      propertyPath: HasDeserialized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114291166128785084, guid: 5f4893f0cb61a59419f431f7d4289be5,
+        type: 2}
+      propertyPath: HasDeserialized
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1478925578981000, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 5f4893f0cb61a59419f431f7d4289be5, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &724633872
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1208864138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +584,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 751890196
+  randomSeed: 1699387589
   InitialModule:
     serializedVersion: 3
     enabled: 1
