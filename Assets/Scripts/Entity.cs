@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
+using PicaVoxel;
 
 // todo: Setup with voxels
 
-// todo: Walk (anim)
-// todo: Fall (anim)
+// todo: easy
+// todo: exploder (anim)
+
 // todo: Stoppers
 // todo: builder
-// todo: parachute (anim)
-// todo: exploder (anim)
-// todo: drown (anim)
-// todo: splash (anim)
 // todo: escape (anim)
 
 // 2ndry
+// todo: drown (anim)
+// todo: splash (anim)
 // todo: Climb
 // todo: dig down
 // todo: dig sideways
@@ -41,15 +41,23 @@ public class Entity : MonoBehaviour
     [EnumFlag]
 	public Behaviour behaviour = Behaviour.Default;
 
-
-	float parachuteTime = 6;
+    float parachuteTime = 6;
     float currentParachuteTime;
 	float parachuteMassModifier = 0.3f;
 	float originalMass;
 
     float explodeTimer = 5;
 
-	void Start()
+    public enum Animations
+    {
+        Walking,
+        Falling,
+        Parachute
+    }
+
+    public GameObject[] animations;
+
+    void Start()
     {
         character = GetComponent<CharacterController>();
         currentParachuteTime = parachuteTime;
@@ -69,7 +77,9 @@ public class Entity : MonoBehaviour
 
         if (character.isGrounded)
 		{
-			if (fallingTime > fallTolerence)
+            SetActiveAnim(Animations.Walking);
+
+            if (fallingTime > fallTolerence)
 			{
 				Die();
 			}
@@ -93,18 +103,49 @@ public class Entity : MonoBehaviour
 
             if (CheckBehaviour(Behaviour.Parachute) && currentParachuteTime > 0)
 			{
-				currentParachuteTime -= Time.deltaTime;
+                SetActiveAnim(Animations.Parachute);
+
+                currentParachuteTime -= Time.deltaTime;
                 character.Move(Vector3.down * gravity * parachuteMassModifier * Time.deltaTime);
             }
             else
 			{
+                SetActiveAnim(Animations.Falling);
+
                 fallingTime += Time.deltaTime;
                 character.SimpleMove(Vector3.down * gravity * Time.deltaTime);
+
             }
 		}
 	}
 
-	void ProcessJustBackOnGround()
+    void SetActiveAnim(Animations anim)
+    {
+        for (int i = 0; i < animations.Length; i++)
+        {
+            if(animations[i] == null)
+            {
+                continue;
+            }
+
+            if(i == (int) anim)
+            {
+                if (animations[i].activeSelf == false)
+                {
+                    animations[i].SetActive(true);
+                }
+            }
+            else
+            {
+                if(animations[i].activeSelf)
+                {
+                    animations[i].SetActive(false);
+                }
+            }
+        }
+    }
+
+    void ProcessJustBackOnGround()
 	{
 		fallingTime = 0;
 		currentParachuteTime = parachuteTime;
@@ -163,7 +204,7 @@ public class Entity : MonoBehaviour
 
     public void Explode()
     {
-        // todo, explode!
+        GetComponent<Exploder>().Explode();
         Die();
     }
 
