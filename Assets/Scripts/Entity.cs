@@ -4,13 +4,12 @@ using PicaVoxel;
 // todo: Setup with voxels
 
 // todo: easy
+// todo: Stoppers
 // todo: exploder (anim)
 
-// todo: Stoppers
+// 2ndry
 // todo: builder
 // todo: escape (anim)
-
-// 2ndry
 // todo: drown (anim)
 // todo: splash (anim)
 // todo: Climb
@@ -52,7 +51,8 @@ public class Entity : MonoBehaviour
     {
         Walking,
         Falling,
-        Parachute
+        Parachute,
+        Stopper
     }
 
     public GameObject[] animations;
