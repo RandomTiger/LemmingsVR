@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using PicaVoxel;
 
-// todo: Setup with voxels
+// todo: Setup paths with voxels
 
 // todo: easy
 // todo: Stoppers
@@ -153,11 +153,6 @@ public class Entity : MonoBehaviour
 
     public bool IsGrounded() { return character.isGrounded; }
 
-    void UpdateWalk()
-    {
-		character.SimpleMove(transform.forward);
-    }
-
 	bool CheckBehaviour(Behaviour check)
 	{
 		return (behaviour & check) == check;
@@ -188,19 +183,41 @@ public class Entity : MonoBehaviour
 		behaviour &= ~remove;
 	}
 
-	void UpdateStationary()
+    void UpdateWalk()
     {
+        SetActiveAnim(Animations.Walking);
+        character.SimpleMove(transform.forward);
+    }
+
+    void UpdateStationary()
+    {
+        SetActiveAnim(Animations.Stopper);
         character.SimpleMove(Vector3.zero);
+    }
+
+    Transform FindTop(Transform node)
+    {
+        while(node.parent != null)
+        {
+            node = node.parent;
+        }
+
+        return node;
     }
 
     void OnTriggerEnter(Collider other)
 	{
-		Director director = other.GetComponent<Director>();
-		if (director)
-		{
-			transform.Rotate(Vector3.up, director.Turn);
-		}
-	}
+        bool isSelf = FindTop(transform) == FindTop(other.transform);
+        if (isSelf)
+        {
+            return;
+        }
+
+        if (other.transform.tag == "Stopper")
+        {
+            transform.Rotate(Vector3.up, 180);
+        }
+    }
 
     public void Explode()
     {
