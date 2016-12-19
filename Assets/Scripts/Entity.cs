@@ -77,8 +77,6 @@ public class Entity : MonoBehaviour
 
         if (character.isGrounded)
 		{
-            SetActiveAnim(Animations.Walking);
-
             if (fallingTime > fallTolerence)
 			{
 				Die();
