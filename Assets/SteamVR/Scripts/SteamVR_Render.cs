@@ -316,15 +316,17 @@ public class SteamVR_Render : MonoBehaviour
 
 	void Update()
 	{
+#if !UNITY_5_6_OPENVR_HACK
 		if (poseUpdater == null)
 		{
 			var go = new GameObject("poseUpdater");
 			go.transform.parent = transform;
 			poseUpdater = go.AddComponent<SteamVR_UpdatePoses>();
 		}
+#endif
 
-		// Force controller update in case no one else called this frame to ensure prevState gets updated.
-		SteamVR_Controller.Update();
+        // Force controller update in case no one else called this frame to ensure prevState gets updated.
+        SteamVR_Controller.Update();
 
 		// Dispatch any OpenVR events.
 		var system = OpenVR.System;

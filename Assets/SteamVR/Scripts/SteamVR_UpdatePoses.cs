@@ -10,6 +10,7 @@ using Valve.VR;
 [RequireComponent(typeof(Camera))]
 public class SteamVR_UpdatePoses : MonoBehaviour
 {
+#if !UNITY_5_6_OPENVR_HACK
 	void Awake()
 	{
 		var camera = GetComponent<Camera>();
@@ -19,8 +20,9 @@ public class SteamVR_UpdatePoses : MonoBehaviour
 		camera.cullingMask = 0;
 		camera.depth = -9999;
 	}
+#endif
 
-	void OnPreCull()
+    void OnPreCull()
 	{
 		var compositor = OpenVR.Compositor;
 		if (compositor != null)

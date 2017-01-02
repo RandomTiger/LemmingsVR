@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public class SwipeDetector : MonoBehaviour {
-
+public class SwipeDetector : Singleton<SwipeDetector>
+{
     public delegate void OnSwipeCallback(Swipe direction);
     public event OnSwipeCallback OnSwipe;
 
