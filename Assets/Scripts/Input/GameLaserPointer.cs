@@ -97,7 +97,7 @@ public class GameLaserPointer : GvrBasePointer
         }
     }
 
-    Ray GetRay()
+    public Ray GetRay()
     {
         return new Ray(transform.position, transform.forward);
     }

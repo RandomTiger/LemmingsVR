@@ -156,7 +156,7 @@ public class Entity : MonoBehaviour
 		return (behaviour & check) == check;
 	}
 
-	bool AddBehaviour(Behaviour add)
+	public bool AddBehaviour(Behaviour add)
 	{
 		if (CheckBehaviour(add))
 		{
@@ -169,6 +169,12 @@ public class Entity : MonoBehaviour
 			case Behaviour.Parachute:
 				currentParachuteTime = parachuteTime;
 				break;
+            case Behaviour.Stop:
+                if(IsGrounded() == false)
+                {
+                    return false;
+                }
+                break;
 		}
 
 		behaviour |= add;

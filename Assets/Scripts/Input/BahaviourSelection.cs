@@ -2,6 +2,7 @@
 
 public class BahaviourSelection : MonoBehaviour
 {
+    public GameLaserPointer pointer;
     public Entity.Behaviour[] Behaviours;
     public GameObject[] Visuals;
     int selection;
@@ -38,6 +39,22 @@ public class BahaviourSelection : MonoBehaviour
             }
 
             Visuals[i].SetActive(i == selection);
+        }
+    }
+
+    void LateUpdate()
+    {
+        Entity.Behaviour selectedBehavour = Behaviours[selection];
+
+        if (GvrController.ClickButtonUp && selectedBehavour != Entity.Behaviour.Default )
+        {
+            RaycastHit hitInfo;
+            int mask = 1 << LayerMask.NameToLayer("Entity");
+            if (Physics.Raycast(pointer.GetRay(), out hitInfo, float.PositiveInfinity, mask))
+            {
+                Entity entity = hitInfo.transform.GetComponent<Entity>();
+                entity.AddBehaviour(selectedBehavour);
+            }
         }
     }
 }

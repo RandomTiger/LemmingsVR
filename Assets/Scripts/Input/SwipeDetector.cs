@@ -48,6 +48,11 @@ public class SwipeDetector : Singleton<SwipeDetector>
 
             timer += Time.deltaTime;
             LastPos = GvrController.TouchPos;
+
+            if(GvrController.ClickButton || GvrController.ClickButtonDown || GvrController.ClickButtonUp)
+            {
+                Reset();
+            }
         }
         else if (GvrController.TouchUp)
         {
@@ -75,11 +80,15 @@ public class SwipeDetector : Singleton<SwipeDetector>
                 }
             }
 
-            bias = Swipe.None;
-            timer = 0;
-
-            velocity = Vector2.zero;
+            Reset();
         }
+    }
 
+    void Reset()
+    {
+        bias = Swipe.None;
+        timer = 0;
+
+        velocity = Vector2.zero;
     }
 }

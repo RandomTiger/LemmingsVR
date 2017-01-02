@@ -512,7 +512,7 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: UNITY_ANDROID;UNITY_HAS_GOOGLEVR;OVERRIDE_GVR_WITH_OPENVR
+    1: UNITY_ANDROID;UNITY_HAS_GOOGLEVR;OVERRIDE_GVR_WITH_OPENVR;UNITY_5_6_OPENVR_HACK
   platformArchitecture: {}
   scriptingBackend: {}
   incrementalIl2cppBuild: {}
